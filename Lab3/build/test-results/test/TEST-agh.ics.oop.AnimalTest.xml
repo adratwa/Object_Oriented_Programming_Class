@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="agh.ics.oop.AnimalTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-10-22T10:16:27" hostname="MBP-Agata.Dlink" time="0.013">
+  <properties/>
+  <testcase name="moveAnimalOffTheMapWestTest()" classname="agh.ics.oop.AnimalTest" time="0.013"/>
+  <system-out><![CDATA[(2, 2)
+(1, 2)
+(0, 2)
+(-1, 2)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
