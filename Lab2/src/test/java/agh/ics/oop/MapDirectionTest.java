@@ -12,6 +12,7 @@ public class MapDirectionTest {
         MapDirection direction2 = MapDirection.NORTH;
         MapDirection direction3 = MapDirection.EAST;
         MapDirection direction4 = MapDirection.SOUTH;
+        
 
         assertAll(
                 () -> assertEquals(MapDirection.NORTH, direction.next()),

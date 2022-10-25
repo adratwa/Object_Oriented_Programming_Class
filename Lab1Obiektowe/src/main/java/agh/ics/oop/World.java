@@ -4,14 +4,19 @@ public class World {
 
     public static void main(String[] args) {
         System.out.println("System wystartował");
-        Direction[] directions =new Direction[args.length];
+        MoveDirection[] directions =new MoveDirection[args.length];
         directions = modifyStringToEnum(args);
         run(directions);
         System.out.println("System zakończył działanie");
 
+
+
+
+
+
     }
 
-    public static void run (Direction[] directions) {
+    public static void run (MoveDirection[] moveDirections) {
 
         // pierwsza opcja: WYPISYWANIE TABLICY STRINGOW Z PRZECINKIEM
 //        for (int i = 0; i< directions.length; i++) {
@@ -44,8 +49,8 @@ public class World {
 
         // druga wersja: WYPISYWANIE NA KONSOLE RUCHU ZWIERZAKA Z TABLICY ENUMOW
         System.out.println("Start");
-        for (Direction direction : directions) {
-            switch (direction) {
+        for (MoveDirection moveDirection : moveDirections) {
+            switch (moveDirection) {
                 case FORWARD -> System.out.println("Zwierzak idzie do przodu");
                 case BACKWARD-> System.out.println("Zwierzak idzie do tyłu");
                 case RIGHT -> System.out.println("Zwierzak skreca w prawo");
@@ -56,17 +61,17 @@ public class World {
     }
 
 
-    public static Direction[] modifyStringToEnum(String [] args) {
-        Direction[] directions = new Direction[args.length];
+    public static MoveDirection[] modifyStringToEnum(String [] args) {
+        MoveDirection[] moveDirections = new MoveDirection[args.length];
         for (int i = 0; i < args.length; i++) {
             switch(args[i]) {
-                case "f" -> directions[i] = Direction.FORWARD;
-                case "b"-> directions[i] = Direction.BACKWARD;
-                case "r" -> directions[i] = Direction.RIGHT;
-                case "l" -> directions[i] = Direction.LEFT;
-                default -> directions[i] = Direction.WRONGDIRECTION;
+                case "f" -> moveDirections[i] = MoveDirection.FORWARD;
+                case "b"-> moveDirections[i] = MoveDirection.BACKWARD;
+                case "r" -> moveDirections[i] = MoveDirection.RIGHT;
+                case "l" -> moveDirections[i] = MoveDirection.LEFT;
+                default -> moveDirections[i] = MoveDirection.WRONGDIRECTION;
             }
         }
-        return directions;
+        return moveDirections;
     }
 }
