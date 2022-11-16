@@ -3,10 +3,21 @@ package agh.ics.oop;
 import java.util.Objects;
 
 public class Animal {
+    private Vector2d location;
     private MapDirection orientation;
-    private static final Vector2d LOWER_BOUND = new Vector2d(0,0);
-    private static final Vector2d UPPER_BOUND = new Vector2d(4,4);
+    private IWorldMap map;
 
+
+    public Animal(IWorldMap map) {
+        this.orientation = MapDirection.NORTH;
+        this.location = new Vector2d(2,2);
+        this.map = map;
+    }
+
+    public Animal(IWorldMap map, Vector2d initialPoistion) {
+        this(map);
+        this.location = initialPoistion;
+    }
 
     public MapDirection getOrientation() {
         return orientation;
@@ -16,18 +27,17 @@ public class Animal {
         return location;
     }
 
-    private Vector2d location;
-
-    public Animal() {
-        this.orientation = MapDirection.NORTH;
-        location = new Vector2d(2,2);
-    }
-
     @Override
     public String toString() {
+
+        return this.orientation.toString();
+    }
+
+    public String toString2() {
+
         return "Animal{" +
-                "orientation=" + orientation +
-                ", location=" + location +
+                "orientation=" + this.orientation +
+                ", location=" + this.location +
                 '}';
     }
 
@@ -37,34 +47,17 @@ public class Animal {
 
     public void  move(MoveDirection direction) {
         Vector2d newVector = this.location;
-        switch(direction) {
-            case RIGHT:
-                this.orientation = this.orientation.next();
-                break;
-            case LEFT:
-                this.orientation = this.orientation.previous();
-                break;
-            case FORWARD:
-                switch (this.orientation) {
-                    case NORTH -> newVector = this.location.add(new Vector2d(0, 1));
-                    case EAST -> newVector = this.location.add(new Vector2d(1, 0));
-                    case SOUTH -> newVector = this.location.subtract(new Vector2d(0, 1));
-                    case WEST -> newVector = this.location.subtract(new Vector2d(1, 0));
-                }
-                break;
-            case BACKWARD:
-                switch (this.orientation) {
-                    case NORTH -> newVector = this.location.subtract(new Vector2d(0, 1));
-                    case EAST -> newVector = this.location.subtract(new Vector2d(1, 0));
-                    case SOUTH -> newVector = this.location.add(new Vector2d(0, 1));
-                    case WEST -> newVector= this.location.add(new Vector2d(1, 0));
-                }
-                break;
-            default:
+        switch (direction) {
+            case RIGHT -> this.orientation = this.orientation.next();
+            case LEFT -> this.orientation = this.orientation.previous();
+            case FORWARD -> newVector = this.location.add(this.orientation.toUnitVector());
+            case BACKWARD -> newVector = this.location.subtract(this.orientation.toUnitVector());
+            default -> {
+            }
         }
-
-        if (newVector.follows(LOWER_BOUND) && newVector.precedes(UPPER_BOUND)) {
+        if (this.map.canMoveTo(newVector)) {
             this.location = newVector;
+
         }
 
     }

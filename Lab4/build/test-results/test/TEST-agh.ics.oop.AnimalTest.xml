@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="agh.ics.oop.AnimalTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-10-25T09:28:46" hostname="macbook-pro-agata.home" time="0.011">
+<testsuite name="agh.ics.oop.AnimalTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2022-11-15T16:48:36" hostname="MBP-Agata" time="0.021">
   <properties/>
-  <testcase name="moveAnimalOffTheMapWestTest()" classname="agh.ics.oop.AnimalTest" time="0.011"/>
+  <testcase name="moveAnimalOffTheMapEastTest()" classname="agh.ics.oop.AnimalTest" time="0.014"/>
+  <testcase name="beginningOrientationTest()" classname="agh.ics.oop.AnimalTest" time="0.0"/>
+  <testcase name="moveAnimalRightRightBackwardTest()" classname="agh.ics.oop.AnimalTest" time="0.001"/>
+  <testcase name="moveAnimalOffTheMapWestTest()" classname="agh.ics.oop.AnimalTest" time="0.001"/>
+  <testcase name="moveAnimalLeftAndForwardTest()" classname="agh.ics.oop.AnimalTest" time="0.0"/>
+  <testcase name="moveAnimalRightAndBackwardTest()" classname="agh.ics.oop.AnimalTest" time="0.001"/>
+  <testcase name="moveAnimalOffTheMapSouthTest()" classname="agh.ics.oop.AnimalTest" time="0.0"/>
+  <testcase name="moveAnimalRightAndForwardTest()" classname="agh.ics.oop.AnimalTest" time="0.0"/>
+  <testcase name="moveAnimalLeftAndBackwardTest()" classname="agh.ics.oop.AnimalTest" time="0.0"/>
+  <testcase name="moveAnimalRightRightForwardTest()" classname="agh.ics.oop.AnimalTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

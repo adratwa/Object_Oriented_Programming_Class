@@ -1,158 +1,157 @@
+
 package agh.ics.oop;
-
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AnimalTest {
+    Vector2d v1 = new Vector2d(3,4);
+
 
     @Test
-    void begininngOrientationTest() {
+    void beginningOrientationTest() {
+        IWorldMap map = new RectangularMap(8,8);
+        Animal animal = new Animal(map, v1);
+        map.place(animal);
         assertAll(
-            () -> assertEquals(MapDirection.NORTH, new Animal().getOrientation()),
-            () -> assertEquals(new Vector2d(2,2), new Animal().getLocation())
+                () -> assertEquals(MapDirection.NORTH, animal.getOrientation()),
+                () -> assertEquals(new Vector2d(3,4), animal.getLocation())
         );
     }
 
-
     @Test
     void moveAnimalRightAndForwardTest() {
-        Animal animal1 = new Animal();
-        animal1.move(MoveDirection.RIGHT);
-        animal1.move(MoveDirection.FORWARD);
+        IWorldMap map = new RectangularMap(8,8);
+        Animal animal = new Animal(map, v1);
+        map.place(animal);
+        animal.move(MoveDirection.RIGHT);
+        animal.move(MoveDirection.FORWARD);
         assertAll(
-                () -> assertEquals(new Vector2d(3,2), animal1.getLocation()),
-                () -> assertEquals(MapDirection.EAST, animal1.getOrientation())
+                () -> assertEquals(new Vector2d(4,4), animal.getLocation()),
+                () -> assertEquals(MapDirection.EAST, animal.getOrientation())
         );
     }
 
     @Test
     void moveAnimalLeftAndForwardTest() {
-        Animal animal1 = new Animal();
-        animal1.move(MoveDirection.LEFT);
-        animal1.move(MoveDirection.FORWARD);
+        IWorldMap map = new RectangularMap(8,8);
+        Animal animal = new Animal(map, v1);
+        map.place(animal);
+        animal.move(MoveDirection.LEFT);
+        animal.move(MoveDirection.FORWARD);
         assertAll(
-                () -> assertEquals(new Vector2d(1,2), animal1.getLocation()),
-                () -> assertEquals(MapDirection.WEST, animal1.getOrientation())
+                () -> assertEquals(new Vector2d(2,4), animal.getLocation()),
+                () -> assertEquals(MapDirection.WEST, animal.getOrientation())
         );
     }
 
+
     @Test
     void moveAnimalRightAndBackwardTest() {
-        Animal animal1 = new Animal();
+        IWorldMap map = new RectangularMap(8,8);
+        Animal animal1 = new Animal(map, v1);
+        map.place(animal1);
         animal1.move(MoveDirection.RIGHT);
         animal1.move(MoveDirection.BACKWARD);
         assertAll(
-                () -> assertEquals(new Vector2d(1,2), animal1.getLocation()),
+                () -> assertEquals(new Vector2d(2,4), animal1.getLocation()),
                 () -> assertEquals(MapDirection.EAST, animal1.getOrientation())
         );
     }
 
     @Test
     void moveAnimalLeftAndBackwardTest() {
-        Animal animal1 = new Animal();
+        IWorldMap map = new RectangularMap(8,8);
+        Animal animal1 = new Animal(map, v1);
+        map.place(animal1);
         animal1.move(MoveDirection.LEFT);
         animal1.move(MoveDirection.BACKWARD);
         assertAll(
-                () -> assertEquals(new Vector2d(3,2), animal1.getLocation()),
+                () -> assertEquals(new Vector2d(4,4), animal1.getLocation()),
                 () -> assertEquals(MapDirection.WEST, animal1.getOrientation())
         );
     }
 
-
-
     @Test
     void moveAnimalRightRightForwardTest() {
-        Animal animal1 = new Animal();
+        IWorldMap map = new RectangularMap(8,8);
+        Animal animal1 = new Animal(map, v1);
+        map.place(animal1);
         animal1.move(MoveDirection.RIGHT);
         animal1.move(MoveDirection.RIGHT);
         animal1.move(MoveDirection.FORWARD);
         assertAll(
-                () -> assertEquals(new Vector2d(2,1), animal1.getLocation()),
+                () -> assertEquals(new Vector2d(3,3), animal1.getLocation()),
                 () -> assertEquals(MapDirection.SOUTH, animal1.getOrientation())
         );
     }
 
     @Test
     void moveAnimalRightRightBackwardTest() {
-        Animal animal1 = new Animal();
+        IWorldMap map = new RectangularMap(8,8);
+        Animal animal1 = new Animal(map, v1);
+        map.place(animal1);
         animal1.move(MoveDirection.RIGHT);
         animal1.move(MoveDirection.RIGHT);
         animal1.move(MoveDirection.BACKWARD);
         assertAll(
-                () -> assertEquals(new Vector2d(2,3), animal1.getLocation()),
+                () -> assertEquals(new Vector2d(3,5), animal1.getLocation()),
                 () -> assertEquals(MapDirection.SOUTH, animal1.getOrientation())
         );
     }
 
     @Test
-    void moveAnimalForwardTest() {
-        Animal animal1 = new Animal();
-        animal1.move(MoveDirection.FORWARD);
-        assertAll(
-                () -> assertEquals(new Vector2d(2,3), animal1.getLocation()),
-                () -> assertEquals(MapDirection.NORTH, new Animal().getOrientation())
-        );
-    }
-
-    @Test
-    void moveAnimalBackwardTest() {
-        Animal animal1 = new Animal();
-        animal1.move(MoveDirection.BACKWARD);
-        assertAll(
-                () -> assertEquals(new Vector2d(2,1), animal1.getLocation()),
-                () -> assertEquals(MapDirection.NORTH, new Animal().getOrientation())
-        );
-    }
-
-    @Test
-    void moveAnimalOffTheMapNorthTest() {
-        Animal animal1 = new Animal();
-        animal1.move(MoveDirection.FORWARD);
-        animal1.move(MoveDirection.FORWARD);
-        animal1.move(MoveDirection.FORWARD);
-        animal1.move(MoveDirection.FORWARD);
-        assertAll(
-                () -> assertEquals(new Vector2d(2,4), animal1.getLocation()),
-                () -> assertEquals(MapDirection.NORTH, new Animal().getOrientation())
-        );
-    }
-
-    @Test
     void moveAnimalOffTheMapSouthTest() {
-        Animal animal1 = new Animal();
+        IWorldMap map = new RectangularMap(8,8);
+        Animal animal1 = new Animal(map, v1);
+        map.place(animal1);
+        animal1.move(MoveDirection.BACKWARD);
+        animal1.move(MoveDirection.BACKWARD);
+        animal1.move(MoveDirection.BACKWARD);
         animal1.move(MoveDirection.BACKWARD);
         animal1.move(MoveDirection.BACKWARD);
         animal1.move(MoveDirection.BACKWARD);
         assertAll(
-                () -> assertEquals(new Vector2d(2,0), animal1.getLocation()),
-                () -> assertEquals(MapDirection.NORTH, new Animal().getOrientation())
+                () -> assertEquals(new Vector2d(3,0), animal1.getLocation()),
+                () -> assertEquals(MapDirection.NORTH, animal1.getOrientation())
         );
     }
 
     @Test
     void moveAnimalOffTheMapEastTest() {
-        Animal animal1 = new Animal();
+        IWorldMap map = new RectangularMap(8,8);
+        Animal animal1 = new Animal(map, v1);
+        map.place(animal1);
         animal1.move(MoveDirection.RIGHT);
         animal1.move(MoveDirection.FORWARD);
         animal1.move(MoveDirection.FORWARD);
         animal1.move(MoveDirection.FORWARD);
+        animal1.move(MoveDirection.FORWARD);
+        animal1.move(MoveDirection.FORWARD);
+        animal1.move(MoveDirection.FORWARD);
+        animal1.move(MoveDirection.FORWARD);
+        animal1.move(MoveDirection.FORWARD);
+        animal1.move(MoveDirection.FORWARD);
         assertAll(
-                () -> assertEquals(new Vector2d(4, 2), animal1.getLocation()),
+                () -> assertEquals(new Vector2d(8, 4), animal1.getLocation()),
                 () -> assertEquals(MapDirection.EAST, animal1.getOrientation())
         );
     }
 
     @Test
     void moveAnimalOffTheMapWestTest() {
-        Animal animal1 = new Animal();
+        IWorldMap map = new RectangularMap(8,8);
+        Animal animal1 = new Animal(map,v1);
+        map.place(animal1);
         animal1.move(MoveDirection.LEFT);
         animal1.move(MoveDirection.FORWARD);
         animal1.move(MoveDirection.FORWARD);
         animal1.move(MoveDirection.FORWARD);
+        animal1.move(MoveDirection.FORWARD);
+        animal1.move(MoveDirection.FORWARD);
+        animal1.move(MoveDirection.FORWARD);
         assertAll(
-                () -> assertEquals(new Vector2d(0,2), animal1.getLocation()),
+                () -> assertEquals(new Vector2d(0,4), animal1.getLocation()),
                 () -> assertEquals(MapDirection.WEST, animal1.getOrientation())
         );
     }

@@ -1,0 +1,165 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2639
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;\red191\green100\blue38;\red32\green32\blue32;\red153\green168\blue186;
+\red254\green187\blue91;\red109\green109\blue109;\red117\green114\blue185;\red88\green118\blue71;\red86\green132\blue173;
+}
+{\*\expandedcolortbl;;\csgenericrgb\c74902\c39216\c14902;\csgenericrgb\c12549\c12549\c12549;\csgenericrgb\c60000\c65882\c72941;
+\csgenericrgb\c99608\c73333\c35686;\csgenericrgb\c42745\c42745\c42745;\csgenericrgb\c45882\c44706\c72549;\csgenericrgb\c34510\c46275\c27843;\csgenericrgb\c33725\c51765\c67843;
+}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs28 \cf2 \cb3 from \cf4 collections \cf2 import \cf4 deque\
+\
+\
+\cf2 def \cf5 build\cf4 (pattern_list):\
+    \cf6 # initialization of an AhoCorasick machine\
+    \cf4 machine = \cf7 list\cf4 ()\
+\
+    \cf6 # machine is a list of dictionaries, each node in trie is a dictionary\
+    \cf4 machine.append(\{\cf8 'state_number'\cf4 : \cf9 0\cf2 , \cf8 'label'\cf4 : \cf8 ''\cf2 , \cf8 'next_states'\cf4 : []\cf2 , \cf8 'fail_link'\cf4 : \cf9 0\cf2 , \cf8 'output'\cf4 : []\})\
+\
+    \cf6 # goes through each pattern in pattern_list\
+    \cf2 for \cf4 pattern \cf2 in \cf4 pattern_list:\
+        \cf6 # algorithm is case-insensitive, so each pattern is set to lowercase\
+        \cf4 pattern = pattern.lower()\
+        current_state = \cf9 0\
+\
+        \cf6 # goes through each character in pattern\
+        \cf2 for \cf4 char \cf2 in \cf4 pattern:\
+            \cf6 # checks if from current_state you can go to given char (if already node exists)\
+            # if yes current_state is changed\
+            \cf2 if \cf4 find_next_state(current_state\cf2 , \cf4 char\cf2 , \cf4 machine):\
+                current_state = find_next_state(current_state\cf2 , \cf4 char\cf2 , \cf4 machine)\
+            \cf6 # if not, new node is created\
+            \cf2 else\cf4 :\
+                machine.append(\
+                    \{\
+                        \cf8 'state_number'\cf4 : \cf7 len\cf4 (machine)\cf2 ,\
+                        \cf8 "label"\cf4 : char\cf2 ,\
+                        \cf8 "next_states"\cf4 : []\cf2 ,\
+                        \cf8 "fail_link"\cf4 : \cf9 0\cf2 ,\
+                        \cf8 "output"\cf4 : []\cf2 ,\
+                    \cf4 \}\
+                )\
+                \cf6 # when new node is created, the link between current state and new state (node) have to be created\
+                \cf4 machine[current_state][\cf8 "next_states"\cf4 ].append(\cf7 len\cf4 (machine) - \cf9 1\cf4 )\
+                \cf6 # goes to new state which before was appended as next_state to current_state\
+                \cf4 current_state = \cf7 len\cf4 (machine) - \cf9 1\
+\
+        \cf6 # when whole pattern is iterated it is added as output to current_state(node)\
+        \cf4 machine[current_state][\cf8 "output"\cf4 ].append(pattern)\
+\
+    \cf2 return \cf4 machine\
+\
+\
+\cf6 # function which finds next state of a trie given character and current state\
+\cf2 def \cf5 find_next_state\cf4 (current_state\cf2 , \cf4 char\cf2 , \cf4 machine):\
+    \cf2 for \cf4 state \cf2 in \cf4 machine[current_state][\cf8 "next_states"\cf4 ]:\
+        \cf2 if \cf4 machine[state][\cf8 "label"\cf4 ] == char:\
+            \cf2 return \cf4 state\
+    \cf2 return None\
+\
+\
+\cf6 # function which creates fail links in created tree\
+\cf2 def \cf5 create_fail_links\cf4 (machine):\
+    \cf6 # queue which helps to breadth search tree while creating fails links\
+    \cf4 queue = []\
+\
+    \cf6 # at the beginning every state which is next state of a root state has fail state equals to 0\
+    \cf2 for \cf4 state \cf2 in \cf4 machine[\cf9 0\cf4 ][\cf8 "next_states"\cf4 ]:\
+        machine[state][\cf8 "fail_link"\cf4 ] = \cf9 0\
+        \cf4 queue.append(state)\
+\
+    \cf6 # as long as nodes are in queue\
+    \cf2 while \cf4 queue:\
+        \cf6 # FIFO, gets first element from queue (and deletes it from queue)\
+        \cf4 element = queue.pop(\cf9 0\cf4 )\
+        \cf6 # goes through each next_state of element taken from queue\
+        \cf2 for \cf4 child_node \cf2 in \cf4 machine[element][\cf8 "next_states"\cf4 ]:\
+            state = machine[element][\cf8 "fail_link"\cf4 ]\
+\
+            \cf6 # as long as we can't find node with given character which goes from state\
+            # and state is not 0 (if state is zero in some cases loop would be infinite)\
+            \cf2 while \cf4 find_next_state(state\cf2 , \cf4 machine[child_node][\cf8 "label"\cf4 ]\cf2 , \cf4 machine) \cf2 is None and \cf4 state != \cf9 0\cf4 :\
+                \cf6 # state is equal to fail state of state\
+                \cf4 state = machine[state][\cf8 "fail_link"\cf4 ]\
+\
+            \cf6 # sets fail state of child node\
+            \cf4 machine[child_node][\cf8 "fail_link"\cf4 ] = find_next_state(state\cf2 , \cf4 machine[child_node][\cf8 "label"\cf4 ]\cf2 , \cf4 machine)\
+\
+            \cf6 #  the turning edge so-called joker\
+            \cf2 if \cf4 machine[child_node][\cf8 "fail_link"\cf4 ] \cf2 is None\cf4 :\
+                machine[child_node][\cf8 "fail_link"\cf4 ] = \cf9 0\
+\
+            \cf6 # adds to the output of child node, output of a fail state of this child node\
+            # thanks to it pattern that are in other patterns will be added too\
+            \cf4 machine[child_node][\cf8 "output"\cf4 ] = (machine[child_node][\cf8 "output"\cf4 ] + machine[machine[child_node][\cf8 "fail_link"\cf4 ]][\cf8 "output"\cf4 ])\
+            \cf6 # adds child node to a queue\
+            \cf4 queue.append(child_node)\
+\
+\
+\cf2 def \cf5 search\cf4 (machine\cf2 , \cf4 text):\
+    \cf6 # list of list, each item in list is pattern which appears in text and index when it starts\
+    \cf4 pattern_indexes = \cf7 list\cf4 ()\
+    \cf6 # it is auxiliary variable, copy of a current_state, at the beginning it is 0 because we always start from node 0\
+    \cf4 current_state_copy = \cf9 0\
+\
+    \cf2 for \cf4 i \cf2 in \cf7 range\cf4 (\cf7 len\cf4 (text)):\
+        \cf6 # looks for a next state with label == text[i]\
+        # thanks to the copy we are sure that in "find_next_state" function state is not None\
+        \cf4 current_state = find_next_state(current_state_copy\cf2 , \cf4 text[i]\cf2 , \cf4 machine)\
+\
+        \cf6 # if there is not such node\
+        \cf2 if \cf4 current_state \cf2 is None\cf4 :\
+            \cf6 # goes to fail state\
+            \cf4 current_state = machine[current_state_copy][\cf8 'fail_link'\cf4 ]\
+\
+            \cf6 # as long as we can't find next state with text[i] label and current_state is not 0\
+            \cf2 while \cf4 find_next_state(current_state\cf2 , \cf4 text[i]\cf2 , \cf4 machine) \cf2 is None and \cf4 current_state != \cf9 0\cf4 :\
+                \cf6 # set current state to fail state of current state\
+                \cf4 current_state = machine[current_state][\cf8 "fail_link"\cf4 ]\
+\
+            \cf6 # in this case we can be sure that thanks to while loop current_state in function is not None\
+            # but new current_state-> the result of find function can be none\
+            \cf4 current_state = find_next_state(current_state\cf2 , \cf4 text[i]\cf2 , \cf4 machine)\
+\
+            \cf6 # so before coping current_state we make sure that current state in not none\
+            \cf2 if \cf4 current_state \cf2 is not None\cf4 :\
+                current_state_copy = current_state\
+        \cf2 else\cf4 :\
+            \cf6 # current state is not none, so we can copy it\
+            \cf4 current_state_copy = current_state\
+\
+        \cf2 if \cf4 current_state \cf2 is not None\cf4 :\
+            \cf6 # if there is any output in current node\
+            \cf2 if \cf4 machine[current_state][\cf8 "output"\cf4 ]:\
+                \cf2 for \cf4 pattern \cf2 in \cf4 machine[current_state][\cf8 "output"\cf4 ]:\
+                    \cf6 # append pattern and starting index to the list\
+                    \cf4 pattern_indexes.append([pattern\cf2 , \cf4 i + \cf9 1 \cf4 - \cf7 len\cf4 (pattern)])\
+\
+    \cf2 return \cf4 pattern_indexes\
+\
+\
+\cf2 if \cf4 __name__ == \cf8 "__main__"\cf4 :\
+    patternList = [\cf8 'abc'\cf2 , \cf8 'aab'\cf2 , \cf8 'cba'\cf2 , \cf8 'aa'\cf4 ]\
+    automate = build(patternList)\
+    create_fail_links(automate)\
+    \cf2 for \cf4 node \cf2 in \cf4 automate:\
+        \cf7 print\cf4 (node)\
+    \cf7 print\cf4 (search(automate\cf2 ,\cf8 "aaabc"\cf4 ))\
+\
+\
+\
+\
+\
+\
+\
+\
+\cf6 # # \{0: \{\'91a\'92:1,\'92c\'92:6\},\'85.\
+# max_states = sum([len(pattern) for pattern in patternList])\
+# max_characters = 26\
+# failure_links = [-1] * (max_states + 1)\
+# goto = [[-1] * max_characters for _ in range(max_states+1)]\
+\
+}
