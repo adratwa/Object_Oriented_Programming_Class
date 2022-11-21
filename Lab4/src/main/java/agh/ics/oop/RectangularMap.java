@@ -16,9 +16,11 @@ public class RectangularMap implements IWorldMap {
     }
 
     public List<Animal> getListOfAnimals() {
-        return listOfAnimals;
+        return List.copyOf(listOfAnimals); // ze wzgledow bezpieczenstwa robimy kopie zeby nie mozna bylo tego zmienic
+        // return Collections.unmodifiableList(listOfAnimals); //blokuje dostep do tej listy, lepsze niz kopia bo bardziej wydajne
     }
 
+    // tu poprawić
     @Override
     public boolean canMoveTo(Vector2d position) {
 
@@ -40,18 +42,27 @@ public class RectangularMap implements IWorldMap {
 
     @Override
     public boolean isOccupied(Vector2d position) {
-        for (Animal animal : listOfAnimals) {
-            if (animal.isAt(position) ) { return true;}
-        }
-        return false;
+//        for (Animal animal : listOfAnimals) {
+//            if (animal.isAt(position) ) { return true;}
+//        }
+//        return false;
+
+        // drugi sposob na streamach
+        return listOfAnimals.stream()
+                .anyMatch(animal -> animal.isAt(position));
     }
 
     @Override
     public Object objectAt(Vector2d position) {
-        for (Animal animal : listOfAnimals) {
-            if (animal.isAt(position) ) { return animal;}
-        }
-        return null;
+//        for (Animal animal : listOfAnimals) {
+//            if (animal.isAt(position) ) { return animal;}
+//        }
+//        return null;
+
+        return listOfAnimals.stream()
+                .filter(animal -> animal.isAt(position))
+                .findFirst()
+                .orElse(null);
     }
 
 
