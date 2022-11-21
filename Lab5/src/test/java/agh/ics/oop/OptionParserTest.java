@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class OptionParserTest {
 
     @Test
-    void optionTest() {
+    void optionParserTest() {
         OptionParser parser = new OptionParser();
         ArrayList<MoveDirection> convertedDirections = new ArrayList<MoveDirection>();
         convertedDirections.add(MoveDirection.FORWARD);
