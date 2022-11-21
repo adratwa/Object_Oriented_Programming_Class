@@ -9,14 +9,13 @@ public class Animal {
 
     // zrobic na odwrot konstruktory, to maly powinien "dziedziczyc" z zduzego
     public Animal(IWorldMap map) {
-        this.orientation = MapDirection.NORTH;
-        this.location = new Vector2d(2,2);
-        this.map = map;
+        this(map, new Vector2d(2,2));
     }
 
     public Animal(IWorldMap map, Vector2d initialPoistion) {
-        this(map);
+        this.map = map;
         this.location = initialPoistion;
+        this.orientation = MapDirection.NORTH;
     }
 
     public MapDirection getOrientation() {
