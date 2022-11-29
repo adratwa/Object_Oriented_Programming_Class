@@ -1,8 +1,6 @@
 package agh.ics.oop;
 
-import java.util.ArrayList;
-
-public class RectangularMap extends WorldMap {
+public class RectangularMap extends WorldMap  {
 
     private int width;
     private int height;
@@ -10,7 +8,6 @@ public class RectangularMap extends WorldMap {
     public RectangularMap(int width, int height) {
         this.width = width;
         this.height = height;
-        this.animalList = new ArrayList<Animal>();
     }
 
     @Override
@@ -30,5 +27,6 @@ public class RectangularMap extends WorldMap {
     public Vector2d calculateUpperBound() {
         return new Vector2d(this.width, this.height);
     }
+
 
 }

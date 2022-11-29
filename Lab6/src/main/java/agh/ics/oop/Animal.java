@@ -1,11 +1,21 @@
 package agh.ics.oop;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-public class Animal {
+public class Animal implements Comparable<Animal> {
+
+
+    public int getId() {
+        return id;
+    }
+
+    private int id;
     private Vector2d location;
     private MapDirection orientation;
     private IWorldMap map;
+    private List<IPositionChangeObserver> observerList;
 
     // zrobic na odwrot konstruktory, to maly powinien "dziedziczyc" z zduzego
     public Animal(IWorldMap map) {
@@ -16,6 +26,8 @@ public class Animal {
         this.map = map;
         this.location = initialPoistion;
         this.orientation = MapDirection.NORTH;
+        this.observerList = new ArrayList<>();
+        this.addObserver((IPositionChangeObserver) map);
     }
 
     public MapDirection getOrientation() {
@@ -24,6 +36,9 @@ public class Animal {
 
     public Vector2d getLocation() {
         return location;
+    }
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
@@ -55,9 +70,28 @@ public class Animal {
             }
         }
         if (this.map.canMoveTo(newVector)) {
+            this.positionChanged(this.location, newVector);
             this.location = newVector;
-
         }
 
+    }
+
+    public void addObserver(IPositionChangeObserver observer) {
+        this.observerList.add(observer);
+    }
+
+    public void removeObserver(IPositionChangeObserver observer) {
+        this.observerList.remove(observer);
+    }
+
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+        for (IPositionChangeObserver observer : this.observerList) {
+            observer.positionChanged(oldPosition, newPosition);
+        }
+    }
+
+    @Override
+    public int compareTo(Animal o) {
+        return this.id - o.getId();
     }
 }

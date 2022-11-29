@@ -1,14 +1,16 @@
 package agh.ics.oop;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-public abstract class WorldMap implements IWorldMap {
+public abstract class WorldMap implements IWorldMap, IPositionChangeObserver{
 
-    protected List<Animal> animalList;
+    //protected List<Animal> animals;
+    Map<Vector2d, Animal> animals = new HashMap<>();
 
     @Override
-    public List<Animal> getListOfAnimals() {
-        return List.copyOf(this.animalList);
+    public Map<Vector2d, Animal> getMapOfAnimals() {
+        return Map.copyOf(this.animals);
     }
 
 
@@ -16,7 +18,8 @@ public abstract class WorldMap implements IWorldMap {
     @Override
     public boolean place(Animal animal) {
         if (canMoveTo(animal.getLocation())) {
-            this.animalList.add(animal);
+            this.animals.put(animal.getLocation(), animal);
+            animal.setId(this.animals.size());
             return true;
         }
         return false;
@@ -24,10 +27,7 @@ public abstract class WorldMap implements IWorldMap {
 
     @Override
     public Object objectAt(Vector2d position) {
-        return this.animalList.stream()
-                .filter(animal -> animal.isAt(position))
-                .findFirst()
-                .orElse(null);
+        return this.animals.get(position);
     }
 
 
@@ -38,6 +38,13 @@ public abstract class WorldMap implements IWorldMap {
     public String toString() {
         MapVisualizer mapVisualizer = new MapVisualizer(this);
         return mapVisualizer.draw(this.calculateLowerBound(), this.calculateUpperBound());
+    }
+
+    @Override
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+        Animal animal = (Animal) this.objectAt(oldPosition);
+        this.animals.remove(oldPosition);
+        this.animals.put(newPosition, animal);
     }
 
 }

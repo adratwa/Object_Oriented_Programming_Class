@@ -4,17 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class GrassField extends WorldMap{
+public class GrassField extends WorldMap implements IPositionChangeObserver{
 
-    //private int numberOfGrass;
+    private int numberOfGrass;
+
+    public List<Grass> getGrassList() {
+        return grassList;
+    }
+
     private List<Grass> grassList;
 
     public GrassField(int numberOfGrass) {
         this.grassList = new ArrayList<>();
-        this.animalList = new ArrayList<>();
+        this.numberOfGrass = numberOfGrass;
         for (int i=1; i <= numberOfGrass;i++ ){
-            createGrass(numberOfGrass);
-            }
+            createGrass();
+        }
     }
 
     @Override
@@ -22,15 +27,11 @@ public class GrassField extends WorldMap{
         // if animal steps on the grass, the grass vanishes and appears in new free place
         if (this.isOccupiedByGrass(position)) {
             this.grassList.removeIf(grass -> grass.isAt(position));
-            createGrass(this.grassList.size());
+            createGrass();
 
         }
-        for (Animal animal : this.animalList) {
-            if (animal.isAt(position) ) { return false;}
-        }
+        return (this.objectAt(position) instanceof Grass || this.objectAt(position) == null);
 
-
-        return true;
     }
 
 
@@ -45,19 +46,22 @@ public class GrassField extends WorldMap{
     @Override
     public Object objectAt(Vector2d position) {
         Object object = super.objectAt(position);
-        for (Grass grass : this.grassList) {
-            if (grass.isAt(position) ) { return grass;}
+        if (object == null) {
+            for (Grass grass : this.grassList) {
+                if (grass.isAt(position) ) { return grass;}
+            }
         }
+
         return object;
     }
 
     // to jest niedeterministyczne, to nie jest dobry pomysl
     // moznaby to zorbic za pomoca collections shuffle
-    public void createGrass(int numberOfGrass) {
+    public void createGrass() {
         Random random = new Random();
         while (true) {
-            int x = random.nextInt((int) (Math.sqrt(numberOfGrass * 10) - 0));
-            int y = random.nextInt((int) (Math.sqrt(numberOfGrass * 10) - 0));
+            int x = random.nextInt((int) (Math.sqrt(this.numberOfGrass * 10) - 0));
+            int y = random.nextInt((int) (Math.sqrt(this.numberOfGrass * 10) - 0));
             Vector2d vector = new Vector2d(x, y);
             Grass grass = new Grass(new Vector2d(x, y));
             if (!this.isOccupied(vector)) {
@@ -75,9 +79,8 @@ public class GrassField extends WorldMap{
         for (Grass grass : this.grassList) {
             upperBound = upperBound.upperRight(grass.getPositionBunchOfGrass());
         }
-
-        for (Animal animal : this.animalList) {
-            upperBound = upperBound.upperRight(animal.getLocation());
+        for (Vector2d key: this.animals.keySet()) {
+            upperBound = upperBound.upperRight(key);
         }
 
         return upperBound;
@@ -93,11 +96,13 @@ public class GrassField extends WorldMap{
             lowerBound = lowerBound.lowerLeft(grass.getPositionBunchOfGrass());
         }
 
-        for (Animal animal : this.animalList) {
-            lowerBound = lowerBound.lowerLeft(animal.getLocation());
+        for (Vector2d key: this.animals.keySet()) {
+            lowerBound = lowerBound.lowerLeft(key);
         }
 
         return lowerBound;
 
     }
+
+
 }
