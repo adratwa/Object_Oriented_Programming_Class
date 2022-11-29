@@ -9,8 +9,8 @@ public class IntegrationTests {
 
     @Test
     void moveTwoAnimalsAroundTheMapWithCollision() {
-        //{"f", "b", "r", "l", "f", "f", "r", "r", "f", "f", "f", "f", "f", "f", "f", "f"}
-        String[] arg = new String[] {"f", "b", "r", "l"};
+        //{}
+        String[] arg = new String[] {"f", "b", "r", "l", "f", "f", "r", "r", "f", "f", "f", "f", "f", "f", "f", "f"};
         MoveDirection[] directions = new OptionParser().parse2(arg);
         RectangularMap map = new RectangularMap(10, 5);
         Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
@@ -18,10 +18,10 @@ public class IntegrationTests {
         engine.run();
 
         assertAll(
-                () -> assertEquals(MapDirection.EAST, map.getMapOfAnimals().get(new Vector2d(2,3)).getOrientation()),
-                //() -> assertEquals(new Vector2d(2,3), entry.getKey()),
-                () -> assertEquals(MapDirection.WEST, map.getMapOfAnimals().get(new Vector2d(3,3)).getOrientation())
-                //() -> assertEquals(new Vector2d(3,3),  entry2.getKey())
+                () -> assertEquals(MapDirection.SOUTH, map.getMapOfAnimals().get(new Vector2d(2,0)).getOrientation()),
+                () -> assertEquals(new Vector2d(2,0), map.getMapOfAnimals().get(new Vector2d(2,0)).getLocation()),
+                () -> assertEquals(MapDirection.NORTH, map.getMapOfAnimals().get(new Vector2d(3,5)).getOrientation()),
+                () -> assertEquals(new Vector2d(3,5),  map.getMapOfAnimals().get(new Vector2d(3,5)).getLocation())
         );
     }
 

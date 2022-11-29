@@ -1,32 +1,28 @@
 package agh.ics.oop;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class GrassField extends WorldMap implements IPositionChangeObserver{
 
     private int numberOfGrass;
-
-    public List<Grass> getGrassList() {
-        return grassList;
-    }
-
-    private List<Grass> grassList;
+    private Map<Vector2d, Grass> grasses = new HashMap<>();;
 
     public GrassField(int numberOfGrass) {
-        this.grassList = new ArrayList<>();
         this.numberOfGrass = numberOfGrass;
         for (int i=1; i <= numberOfGrass;i++ ){
             createGrass();
         }
     }
 
+    public Map<Vector2d, Grass> getGrassList() {
+        return grasses;
+    }
+
     @Override
     public boolean canMoveTo(Vector2d position) {
         // if animal steps on the grass, the grass vanishes and appears in new free place
         if (this.isOccupiedByGrass(position)) {
-            this.grassList.removeIf(grass -> grass.isAt(position));
+            this.grasses.remove(position);
             createGrass();
 
         }
@@ -36,10 +32,7 @@ public class GrassField extends WorldMap implements IPositionChangeObserver{
 
 
     public boolean isOccupiedByGrass(Vector2d position) {
-        for (Grass grass : this.grassList) {
-            if (grass.isAt(position) ) { return true;}
-        }
-        return false;
+        return this.objectAt(position) instanceof Grass;
     }
 
 
@@ -47,11 +40,8 @@ public class GrassField extends WorldMap implements IPositionChangeObserver{
     public Object objectAt(Vector2d position) {
         Object object = super.objectAt(position);
         if (object == null) {
-            for (Grass grass : this.grassList) {
-                if (grass.isAt(position) ) { return grass;}
-            }
+            object = this.grasses.get(position);
         }
-
         return object;
     }
 
@@ -65,7 +55,7 @@ public class GrassField extends WorldMap implements IPositionChangeObserver{
             Vector2d vector = new Vector2d(x, y);
             Grass grass = new Grass(new Vector2d(x, y));
             if (!this.isOccupied(vector)) {
-                this.grassList.add(grass);
+                this.grasses.put(vector, grass);
                 break;
             }
         }
@@ -76,8 +66,8 @@ public class GrassField extends WorldMap implements IPositionChangeObserver{
 
         Vector2d upperBound = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
 
-        for (Grass grass : this.grassList) {
-            upperBound = upperBound.upperRight(grass.getPositionBunchOfGrass());
+        for (Vector2d key: this.grasses.keySet()) {
+            upperBound = upperBound.upperRight(key);
         }
         for (Vector2d key: this.animals.keySet()) {
             upperBound = upperBound.upperRight(key);
@@ -92,8 +82,8 @@ public class GrassField extends WorldMap implements IPositionChangeObserver{
 
         Vector2d lowerBound = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
 
-        for (Grass grass : this.grassList) {
-            lowerBound = lowerBound.lowerLeft(grass.getPositionBunchOfGrass());
+        for (Vector2d key: this.grasses.keySet()) {
+            lowerBound = lowerBound.lowerLeft(key);
         }
 
         for (Vector2d key: this.animals.keySet()) {

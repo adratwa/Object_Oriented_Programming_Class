@@ -5,15 +5,13 @@ import java.util.Map;
 
 public abstract class WorldMap implements IWorldMap, IPositionChangeObserver{
 
-    //protected List<Animal> animals;
-    Map<Vector2d, Animal> animals = new HashMap<>();
+
+    protected Map<Vector2d, Animal> animals = new HashMap<>();
 
     @Override
     public Map<Vector2d, Animal> getMapOfAnimals() {
         return Map.copyOf(this.animals);
     }
-
-
 
     @Override
     public boolean place(Animal animal) {
@@ -29,8 +27,6 @@ public abstract class WorldMap implements IWorldMap, IPositionChangeObserver{
     public Object objectAt(Vector2d position) {
         return this.animals.get(position);
     }
-
-
 
     public abstract Vector2d calculateUpperBound();
     public abstract Vector2d calculateLowerBound();
