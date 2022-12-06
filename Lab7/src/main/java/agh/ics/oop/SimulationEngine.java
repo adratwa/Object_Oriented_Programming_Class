@@ -1,16 +1,15 @@
 package agh.ics.oop;
 
-import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class SimulationEngine implements IEngine{
 
     private  IWorldMap map;
-    private MoveDirection[] directions;
+    private List<MoveDirection> directions;
     private Vector2d[] vectors;
 
-    public SimulationEngine(MoveDirection[] directions, IWorldMap map, Vector2d[] vectors ) {
+    public SimulationEngine(List<MoveDirection> directions, IWorldMap map, Vector2d[] vectors ) {
         this.directions = directions;
         this.map = map;
         this.vectors = vectors;
@@ -25,16 +24,16 @@ public class SimulationEngine implements IEngine{
     @Override
     public void run() {
         int i = 0;
-        LinkedHashMap<Vector2d, Animal> sortedMap = this.map.getMapOfAnimals().entrySet()
-                .stream()
-                .sorted(Map.Entry.comparingByValue())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (prev, next) -> next, LinkedHashMap::new));
+//        LinkedHashMap<Vector2d, Animal> sortedMap = this.map.getMapOfAnimals().entrySet()
+//                .stream()
+//                .sorted(Map.Entry.comparingByValue())
+//                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (prev, next) -> next, LinkedHashMap::new));
 
-        while (i < directions.length) {
-            for (Map.Entry<Vector2d, Animal> set : sortedMap.entrySet()) {
-                set.getValue().move(directions[i]);
+        while (i < directions.size()) {
+            for (Map.Entry<Vector2d, Animal> set : this.map.getMapOfAnimals().entrySet()) {
+                set.getValue().move(directions.get(i));
                 i++;
-                if (i == directions.length) { break;}
+                if (i == directions.size()) { break;}
             }
 
         }

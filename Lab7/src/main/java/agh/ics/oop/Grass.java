@@ -2,13 +2,8 @@ package agh.ics.oop;
 
 import java.util.Objects;
 
-public class Grass {
-    /*
-    Nie dodałam interejsu IMapElement, gdyż uważam że w tym przypadku nie uprościłby implementacji klasy Animal i Grass
-    Niektore funkcje, np isOccupiedByGrass operują tylko na trawie/ zwierzetach, wiec zrobienie jednej listy IMapElement utrudniłoby
-    implementaacje tej funkcji (za kazdym razem przy iterowaniu należałoby sprawdzac jaki to typ, co mija sie z celem)
+public class Grass implements IElement {
 
-    *  */
 
     private Vector2d positionBunchOfGrass;
 
@@ -17,7 +12,8 @@ public class Grass {
 
     }
 
-    public Vector2d getPositionBunchOfGrass() {
+    @Override
+    public Vector2d getLocation() {
         return positionBunchOfGrass;
     }
 

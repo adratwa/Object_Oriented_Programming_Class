@@ -7,15 +7,28 @@ public class GrassField extends WorldMap implements IPositionChangeObserver{
     private int numberOfGrass;
     private Map<Vector2d, Grass> grasses = new HashMap<>();;
 
+
+
+    private MapBoundary mapBoundary = new MapBoundary();
     public GrassField(int numberOfGrass) {
         this.numberOfGrass = numberOfGrass;
         for (int i=1; i <= numberOfGrass;i++ ){
             createGrass();
         }
     }
-
+    public MapBoundary getMapBoundary() {
+        return mapBoundary;
+    }
     public Map<Vector2d, Grass> getGrassList() {
         return grasses;
+    }
+
+    @Override
+    public boolean place(Animal animal) {
+        boolean canPlace = super.place(animal);
+        mapBoundary.addElementX(animal.getLocation());
+        mapBoundary.addElementY(animal.getLocation());
+        return canPlace;
     }
 
     @Override
@@ -56,6 +69,8 @@ public class GrassField extends WorldMap implements IPositionChangeObserver{
             Grass grass = new Grass(new Vector2d(x, y));
             if (!this.isOccupied(vector)) {
                 this.grasses.put(vector, grass);
+                this.mapBoundary.addElementX(grass.getLocation());
+                this.mapBoundary.addElementY(grass.getLocation());
                 break;
             }
         }
@@ -64,35 +79,20 @@ public class GrassField extends WorldMap implements IPositionChangeObserver{
     @Override
     public Vector2d calculateUpperBound() {
 
-        Vector2d upperBound = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
-
-        for (Vector2d key: this.grasses.keySet()) {
-            upperBound = upperBound.upperRight(key);
-        }
-        for (Vector2d key: this.animals.keySet()) {
-            upperBound = upperBound.upperRight(key);
-        }
-
-        return upperBound;
+       return new Vector2d(this.mapBoundary.getSortedElementsX().first().x, this.mapBoundary.getSortedElementsY().first().y);
 
     }
 
     @Override
     public Vector2d calculateLowerBound() {
 
-        Vector2d lowerBound = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
-
-        for (Vector2d key: this.grasses.keySet()) {
-            lowerBound = lowerBound.lowerLeft(key);
-        }
-
-        for (Vector2d key: this.animals.keySet()) {
-            lowerBound = lowerBound.lowerLeft(key);
-        }
-
-        return lowerBound;
+        return new Vector2d(this.mapBoundary.getSortedElementsX().last().x, this.mapBoundary.getSortedElementsY().last().y);
 
     }
 
-
+    @Override
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+        super.positionChanged(oldPosition, newPosition);
+        this.mapBoundary.positionChanged(oldPosition, newPosition);
+    }
 }

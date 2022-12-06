@@ -2,8 +2,7 @@ package agh.ics.oop;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RectangularMapTest {
 
@@ -59,12 +58,12 @@ public class RectangularMapTest {
     void placeTest() {
         RectangularMap rectangularMap = new RectangularMap(10,10);
         Animal animal1 = new Animal(rectangularMap, new Vector2d(3,3));
-        Animal animal2 = new Animal(rectangularMap, new Vector2d(11,1));
 
         assertAll(
                 () -> assertEquals(true, rectangularMap.place(animal1)),
-                () -> assertEquals(false, rectangularMap.place(animal2))
-
+                () -> assertThrows(IllegalArgumentException.class, () -> {
+            rectangularMap.place(animal1);
+        })
         );
     }
 }

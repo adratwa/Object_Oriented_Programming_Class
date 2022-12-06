@@ -2,8 +2,7 @@ package agh.ics.oop;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GrassFieldTest {
 
@@ -15,8 +14,10 @@ public class GrassFieldTest {
 
         assertAll(
                 () -> assertEquals(true, grassField.place(animal1)),
-                () -> assertEquals(true, grassField.place(animal2))
-
+                () -> assertEquals(true, grassField.place(animal2)),
+                () -> assertThrows(IllegalArgumentException.class, () -> {
+            grassField.place(animal2);
+        })
         );
     }
 

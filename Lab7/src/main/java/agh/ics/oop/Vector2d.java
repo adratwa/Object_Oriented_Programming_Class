@@ -1,5 +1,6 @@
 package agh.ics.oop;
 
+import java.util.Comparator;
 import java.util.Objects;
 
 public class Vector2d {
@@ -75,3 +76,23 @@ public class Vector2d {
         return Objects.hash(this.x, this.y);
     }
 }
+
+class  XPositionComparator implements Comparator<Vector2d> {
+
+//    @Override
+//    public int compare(Animal o1, Animal o2) {
+//        return o2.getLocation().x - o1.getLocation().x;
+//    }
+
+    @Override
+    public int compare(Vector2d o1, Vector2d o2) {
+        return o2.x - o1.x;
+    }
+}
+
+class YPositionComparator implements Comparator<Vector2d> {
+    @Override
+    public int compare(Vector2d o1, Vector2d o2) {
+        return o2.y - o1.y;
+    }
+};

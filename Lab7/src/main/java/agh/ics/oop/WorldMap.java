@@ -17,10 +17,10 @@ public abstract class WorldMap implements IWorldMap{
     public boolean place(Animal animal) {
         if (canMoveTo(animal.getLocation())) {
             this.animals.put(animal.getLocation(), animal);
-            animal.setId(this.animals.size());
+            //animal.setId(this.animals.size());
             return true;
         }
-        return false;
+        throw new IllegalArgumentException("Animal can't be placed at this position in the map: " + animal.getLocation());
     }
 
     @Override

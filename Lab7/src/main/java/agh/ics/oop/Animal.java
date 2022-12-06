@@ -4,14 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Animal implements Comparable<Animal> {
+public class Animal implements IElement {
 
 
-    public int getId() {
-        return id;
-    }
 
-    private int id;
+
     private Vector2d location;
     private MapDirection orientation;
     private IWorldMap map;
@@ -27,18 +24,16 @@ public class Animal implements Comparable<Animal> {
         this.location = initialPoistion;
         this.orientation = MapDirection.NORTH;
         this.observerList = new ArrayList<>();
-        this.addObserver((IPositionChangeObserver) map);
+        this.addObserver(map);
     }
 
     public MapDirection getOrientation() {
         return orientation;
     }
 
+    @Override
     public Vector2d getLocation() {
         return location;
-    }
-    public void setId(int id) {
-        this.id = id;
     }
 
     @Override
@@ -90,8 +85,9 @@ public class Animal implements Comparable<Animal> {
         }
     }
 
-    @Override
-    public int compareTo(Animal o) {
-        return this.id - o.getId();
-    }
+
+
+
 }
+
+
