@@ -3,7 +3,7 @@ package agh.ics.oop;
 import java.util.List;
 import java.util.Map;
 
-public class SimulationEngine implements IEngine{
+public class SimulationEngine implements IEngine, Runnable{
 
     private  IWorldMap map;
     private List<MoveDirection> directions;
@@ -24,15 +24,13 @@ public class SimulationEngine implements IEngine{
     @Override
     public void run() {
         int i = 0;
-//        LinkedHashMap<Vector2d, Animal> sortedMap = this.map.getMapOfAnimals().entrySet()
-//                .stream()
-//                .sorted(Map.Entry.comparingByValue())
-//                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (prev, next) -> next, LinkedHashMap::new));
 
         while (i < directions.size()) {
             for (Map.Entry<Vector2d, Animal> set : this.map.getMapOfAnimals().entrySet()) {
                 set.getValue().move(directions.get(i));
                 i++;
+                System.out.println(i);
+                System.out.println(directions.size());
                 if (i == directions.size()) { break;}
             }
 

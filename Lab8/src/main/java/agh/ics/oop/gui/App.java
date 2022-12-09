@@ -12,21 +12,25 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
-public class App extends Application {
+public class App extends Application implements IPositionChangeObserver {
         private WorldMap map;
         private static final String EMPTY_CELL = " ";
-        private final int HEIGHT = 18;
+        private static final int HEIGHT = 18;
 
         @Override
         public void init(){
-                //String[] arg = new String[] {"f", "b", "r", "l", "f", "f", "r", "r", "f", "f", "f", "f", "f", "f", "f", "f"};
-                //List<String> al = Arrays.asList(arg);
+
                 ArrayList<MoveDirection> directions = new OptionParser().parse(getParameters().getRaw());
                 this.map = new GrassField(10);
                 Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4)};
-                IEngine engine = new SimulationEngine(directions, map, positions);
+                SimulationEngine engine = new SimulationEngine(directions, map, positions);
+//                Thread engineThread = new Thread(engine);
+//                engineThread.start();
                 engine.run();
-                System.out.println(map.toString());
+                //System.out.println(map.toString());
+
+        }
+        public void actualization() {
 
         }
 
@@ -79,21 +83,24 @@ public class App extends Application {
 
                 primaryStage.show();
 
+                //grid.getChildren().clear();
+
 
         }
 
         private String drawObject(Vector2d currentPosition) {
-                String result = null;
+                String result = EMPTY_CELL;
                 if (this.map.isOccupied(currentPosition)) {
                         Object object = this.map.objectAt(currentPosition);
                         if (object != null) {
                                 result = object.toString();
-                        } else {
-                                result = EMPTY_CELL;
                         }
-                } else {
-                        result = EMPTY_CELL;
                 }
                 return result;
+        }
+
+        @Override
+        public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+
         }
 }

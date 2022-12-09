@@ -41,4 +41,12 @@ public class MapBoundary implements IPositionChangeObserver{
     public void addElementY (Vector2d vector) {
         this.sortedElementsY.add(vector);
     }
+
+    public Vector2d lowerBound () {
+        return new Vector2d(this.sortedElementsX.last().x, this.sortedElementsY.last().y);
+    }
+
+    public Vector2d upperBound () {
+        return new Vector2d(this.sortedElementsX.first().x, this.sortedElementsY.first().y);
+    }
 }

@@ -28,6 +28,7 @@ public class GrassField extends WorldMap implements IPositionChangeObserver{
         boolean canPlace = super.place(animal);
         mapBoundary.addElementX(animal.getLocation());
         mapBoundary.addElementY(animal.getLocation());
+        animal.addObserver(mapBoundary);
         return canPlace;
     }
 
@@ -79,20 +80,20 @@ public class GrassField extends WorldMap implements IPositionChangeObserver{
     @Override
     public Vector2d calculateUpperBound() {
 
-       return new Vector2d(this.mapBoundary.getSortedElementsX().first().x, this.mapBoundary.getSortedElementsY().first().y);
+       return this.mapBoundary.upperBound();
 
     }
 
     @Override
     public Vector2d calculateLowerBound() {
 
-        return new Vector2d(this.mapBoundary.getSortedElementsX().last().x, this.mapBoundary.getSortedElementsY().last().y);
+        return this.mapBoundary.lowerBound();
 
     }
 
     @Override
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
         super.positionChanged(oldPosition, newPosition);
-        this.mapBoundary.positionChanged(oldPosition, newPosition);
+        //this.mapBoundary.positionChanged(oldPosition, newPosition);
     }
 }

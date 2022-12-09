@@ -60,7 +60,6 @@ public class RectangularMapTest {
         Animal animal1 = new Animal(rectangularMap, new Vector2d(3,3));
 
         assertAll(
-                () -> assertEquals(true, rectangularMap.place(animal1)),
                 () -> assertThrows(IllegalArgumentException.class, () -> {
             rectangularMap.place(animal1);
         })
