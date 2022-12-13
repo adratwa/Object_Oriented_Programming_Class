@@ -17,6 +17,11 @@ public class Grass implements IElement {
         return positionBunchOfGrass;
     }
 
+    @Override
+    public String getNameOfPathElement() {
+        return "src/main/resources/grass.png";
+    }
+
     public boolean isAt(Vector2d position) {
         return Objects.equals(this.positionBunchOfGrass, position);
     }
