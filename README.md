@@ -1,4 +1,4 @@
-# Object-oriented programming in Java - class repository
+# Object-Oriented Programming in Java - class repository
 
 The repository contains solutions to exercises from object-oriented programming classes in Java, conducted at the Faculty of Computer Science, Electronics and Telecommunications at AGH University of Science and Technology as part of the master's degree program in Data Science in semester 0 of 2022.
 
