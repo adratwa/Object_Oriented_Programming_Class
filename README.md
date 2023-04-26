@@ -4,7 +4,7 @@ The repository contains solutions to exercises from object-oriented programming 
 
 ## Repository structure
 
-Each folder in the repository corresponds to a solution for exercises from particular classes. The following classes are continuation of previous one, so the final program is in 'Lab8'
+Each folder in the repository corresponds to a solution for exercises from particular classes. The following classes are continuation of previous one, so the final program is in 'Lab8'.
 
 **List of classes**
 
